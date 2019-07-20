@@ -1,14 +1,7 @@
 package com.jmstest.JmsTestSpringBoot.Endpoint;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
-import javax.jms.TextMessage;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
-import org.springframework.jms.core.MessagePostProcessor;
 import org.springframework.stereotype.Component;
 
 import com.jmstest.JmsTestSpringBoot.Model.Employee;
@@ -19,9 +12,12 @@ public class MessageSender {
 	@Autowired
 	JmsTemplate jmstemplate;
 	
+	String inboundQ = "InboundQ";
+	String outboundQ = "OutboundQ";
+	
 	public void send() {
 		System.out.println("Sending message to queue");
-		for(int i=0;i<100;i++){
+		for(int i=0;i<10;i++){
 			final int j=i;
 			/*this.jmstemplate.send("pratikQueue", new MessageCreator() {
 				
@@ -32,9 +28,11 @@ public class MessageSender {
 					return message;
 				}
 			});*/
-			
-			this.jmstemplate.convertAndSend("pratikQueue", new Employee("name" + j, "address" + j, j),msg->{
+			this.jmstemplate.setExplicitQosEnabled(true);
+			this.jmstemplate.setTimeToLive(30000);
+			this.jmstemplate.convertAndSend(inboundQ, new Employee("name" + j, "address" + j, j),msg->{
 				System.out.println("Sending message: "+j);
+				msg.setStringProperty("TargetQ", outboundQ);
 				return msg;
 			});
 		}
