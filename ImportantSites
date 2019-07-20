@@ -3,3 +3,5 @@ See the below links for reference:
 https://www.devglan.com/spring-boot/spring-boot-jms-activemq-example
 https://spring.io/guides/gs/messaging-jms/
 https://dzone.com/articles/using-jms-in-spring-boot-1
+
+ActiveMQ admin url: http://localhost:8161/admin
