@@ -33,13 +33,9 @@ public class MessageSender {
 				}
 			});*/
 			
-			this.jmstemplate.convertAndSend("pratikQueue",new Employee("name"+j,"address"+j,j),new MessagePostProcessor() {
-				
-				@Override
-				public Message postProcessMessage(Message msg) throws JMSException {
-					System.out.println("Sending message: "+j);
-					return msg;
-				}
+			this.jmstemplate.convertAndSend("pratikQueue", new Employee("name" + j, "address" + j, j),msg->{
+				System.out.println("Sending message: "+j);
+				return msg;
 			});
 		}
 	}
